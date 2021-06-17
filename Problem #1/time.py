@@ -1,15 +1,26 @@
 import time as timer;
+import os;
 
 def canRun(time) : #time -> array 
     return int(time[1]) < 60 and int(time[2]) < 60;
+
+def clearScreen() :
+    # for mac and linux(here, os.name is 'posix')
+    if os.name == 'posix':
+        os.system('clear')
+    else:
+    # for windows platfrom
+        os.system('cls')
 
 def countDown(time) :
     hr = time[0]; minute = time[1]; sec = time[2]
     totalTime = int(hr)*3600 + int(minute)*60 + int(sec)
     while totalTime :
+        clearScreen()
         printNum(totalTime)
         timer.sleep(1)
         totalTime-=1
+    clearScreen()
     print("___ ___ _ _  __          _    ")
     print(" |   |  ||| |__     | | |_|  |")
     print(" |  _|_ ||| |__     |_| |    ·")
@@ -131,9 +142,12 @@ def printNull() :
             print(" · ",end="")
         else :
             print(" ",end="")
-
-time = input().split(":")
-if(canRun(time)) :
-    countDown(time)
-else :
-    printNull()
+try:
+    time = input().split(":")
+    if(canRun(time)) :
+        countDown(time)
+    else :
+        printNull()
+except:
+    clearScreen()
+    print("Closing program...")
