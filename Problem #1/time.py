@@ -2,7 +2,7 @@ import time as timer;
 import os;
 
 def canRun(time) : #time -> array 
-    return int(time[1]) < 60 and int(time[2]) < 60;
+    return int(time[0]) < 100 and int(time[1]) < 60 and int(time[2]) < 60;
 
 def clearScreen() :
     # for mac and linux(here, os.name is 'posix')
@@ -14,8 +14,7 @@ def clearScreen() :
 
 def calTotalTime(time) :
     hr = time[0]; minute = time[1]; sec = time[2]
-    totalTime = int(hr)*3600 + int(minute)*60 + int(sec)
-    return totalTime;
+    return int(hr)*3600 + int(minute)*60 + int(sec)
 
 def countDown(time) :
     totalTime = calTotalTime(time)
@@ -147,17 +146,21 @@ def printNull() :
         else :
             print(" ",end="")
 try:
+    print("=============================================================")
+    print("\t\tEnter time in format XX:XX:XX")
+    print("*** if invalid format program will immediately terminate. ***")
+    print("=============================================================")
     time = input().split(":")
     if(canRun(time)) :
         clearScreen()
         print()
         printNum(calTotalTime(time))
         print("\nPress ENTER to start count down")
-        print("Ctrl + C to exit program")
+        print("Ctrl + C to termiate program")
         input();
         countDown(time)
     else :
         printNull()
 except:
     clearScreen()
-    print("Closing program...")
+    print("terminating program...")
