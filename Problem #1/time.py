@@ -12,9 +12,13 @@ def clearScreen() :
     # for windows platfrom
         os.system('cls')
 
-def countDown(time) :
+def calTotalTime(time) :
     hr = time[0]; minute = time[1]; sec = time[2]
     totalTime = int(hr)*3600 + int(minute)*60 + int(sec)
+    return totalTime;
+
+def countDown(time) :
+    totalTime = calTotalTime(time)
     while totalTime :
         clearScreen()
         printNum(totalTime)
@@ -145,6 +149,12 @@ def printNull() :
 try:
     time = input().split(":")
     if(canRun(time)) :
+        clearScreen()
+        print()
+        printNum(calTotalTime(time))
+        print("\nPress ENTER to start count down")
+        print("Ctrl + C to exit program")
+        input();
         countDown(time)
     else :
         printNull()
