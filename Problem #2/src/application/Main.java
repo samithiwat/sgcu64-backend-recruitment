@@ -27,7 +27,7 @@ public class Main {
 		System.out.println("  3. Print people count");
 		System.out.println("  4. Search user via phone number");
 		System.out.println("  type \"END\" to terminate program");
-		System.out.print("Please enter command : ");
+		System.out.print("Please enter command number: ");
 	}
 
 	private static void printErrorMessage(String errMessage) {
@@ -132,33 +132,37 @@ public class Main {
 		System.out.println("Check In");
 		System.out.print("Enter your phone number : ");
 		String tel = input.nextLine();
-		if (tel.length() < 10) {
-			printErrorMessage("Invalid phone number");
+		try {
+			if(User.checkValidTel(tel)) {
+				User user;
+				if ((user = Database.getUser(tel)) == null) {
+					try {
+						System.out.println("-----------------------------------------");
+						System.out.println("New one? registering...");
+						System.out.print("Enter your username (more than 5 character) : ");
+						user = Database.addUser(tel, input.nextLine());
+						System.out.println("Successfully registered");
+					} catch (Exception e) {
+						printErrorMessage(e.getMessage());
+						return false;
+					}
+				} else {
+					System.out.println("-----------------------------------------");
+					System.out.println("Welcome back, " + user.getUsername());
+				}
+				String command = printLocationList();
+				checkInLocation(user, command);
+				return true;
+			}
+		} catch (Exception e) {
+			printErrorMessage(e.getMessage());
 			return false;
 		}
-		User user;
-		if ((user = Database.getUser(tel)) == null) {
-			try {
-				System.out.println("-----------------------------------------");
-				System.out.println("New one? registering...");
-				System.out.print("Enter your username (more than 5 character) : ");
-				user = Database.addUser(tel, input.nextLine());
-				System.out.println("Successfully registered");
-			} catch (Exception e) {
-				printErrorMessage(e.getMessage());
-				return false;
-			}
-		} else {
-			System.out.println("-----------------------------------------");
-			System.out.println("Welcome back, " + user.getUsername());
-		}
-		String command = printLocationList();
-		checkInLocation(user, command);
 		return true;
 	}
 
 	private static int registerLocation() {
-		System.out.print("Enter location name to register : ");
+		System.out.print("Enter location name to register (more than 5 character) : ");
 		String name = input.nextLine();
 		if (!Database.isLocationExist(name)) {
 			try {

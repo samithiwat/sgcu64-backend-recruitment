@@ -1,6 +1,7 @@
 package component;
 
 import application.Database;
+import util.Tools;
 
 public class User {
 	private int id;
@@ -15,11 +16,11 @@ public class User {
 		setUsername(username);
 	}
 	
-	private boolean isNumberic(String str) {
-		try {
-			Integer.parseInt(str);
-		} catch (Exception e) {
-			return false;
+	public static boolean checkValidTel(String tel) throws Exception {
+		if (tel.length() != 10)
+			throw new Exception("Phone number must has 10 digits");
+		if(!Tools.isNumberic(tel)) {
+			throw new Exception("Invalid Input");
 		}
 		return true;
 	}
@@ -45,12 +46,9 @@ public class User {
 	}
 	
 	public void setTel(String tel) throws Exception {
-		if (tel.length() != 10)
-			throw new Exception("Phone number must has 10 digits");
-		if(!isNumberic(tel)) {
-			throw new Exception("Invalid Input");
+		if(checkValidTel(tel)) {
+			this.tel = tel;			
 		}
-		this.tel = tel;
 	}
 	
 	public String getUsername() {

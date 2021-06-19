@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import component.Location;
 import component.User;
-import logic.FileController;
+import util.FileController;
 
 public class Database {
 
