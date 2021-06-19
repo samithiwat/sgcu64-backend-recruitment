@@ -3,7 +3,6 @@ package util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 
 import application.Database;
 import component.Location;
@@ -13,7 +12,7 @@ public class FileController {
 	
 	public static String regex = "==";
 	
-	public static void loadUserDatabase() throws IOException,Exception {
+	public static void loadUserDatabase() throws Exception {
 		FileReader fileReader = new FileReader("./userDatabase.txt");
 		BufferedReader buffReader = new BufferedReader(fileReader);
 		while (buffReader.ready()) {
@@ -32,7 +31,7 @@ public class FileController {
 		fileWriter.close();
 	}
 	
-	public static void loadLocationDatabase() throws IOException,Exception{
+	public static void loadLocationDatabase() throws Exception{
 		FileReader fileReader = new FileReader("./locationDatabase.txt");
 		BufferedReader buffReader = new BufferedReader(fileReader);
 		while (buffReader.ready()) {
