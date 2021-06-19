@@ -11,15 +11,6 @@ public class Main {
 	private static Scanner input = new Scanner(System.in);
 
 	public static void main(String[] args) {
-//		try {
-//			Database.addUser("0922501231");
-//			Database.addUser("0822371561");
-//			Database.addUser("0912361274");
-//			Database.addUser("0872241348");
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		Database.migrate();
 		while (!isClose) {
 			printMainMenu();
@@ -183,7 +174,7 @@ public class Main {
 		}
 	}
 
-	private static void checkOutUser() {
+	private static boolean checkOutUser() {
 		System.out.println("-----------------------------------------");
 		System.out.println("Check Out");
 		System.out.print("Enter your phone number : ");
@@ -191,22 +182,30 @@ public class Main {
 		User user;
 		if ((user = Database.getUser(tel)) != null) {
 			if (user.getLocation_id() != -1) {
-				user.setLocation_id(-1);
+				try {
+					Database.removeUserFromLocation(user);
+				} catch (Exception e) {
+					printErrorMessage(e.getMessage());
+					return false;
+				}
 				System.out.println("-----------------------------------------");
 				System.out.println("Successfully check out, " + user.getUsername() + "!");
 				System.out.println("Press ENTER to continue");
 				input.nextLine();
+				return true;
 			} else {
 				System.out.println("-----------------------------------------");
 				System.out.println("You aren't checked in any location yet.");
 				System.out.println("Press ENTER to continue");
 				input.nextLine();
+				return false;
 			}
 		} else {
 			System.out.println("-----------------------------------------");
 			printErrorMessage("Not found user");
 			System.out.println("Press ENTER to continue");
 			input.nextLine();
+			return false;
 		}
 	}
 

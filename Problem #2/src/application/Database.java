@@ -15,6 +15,11 @@ public class Database {
 		user.setLocation_id(location_id);
 		FileController.saveUserDatabase();
 	}
+	
+	public static void removeUserFromLocation(User user) throws Exception {
+		user.setLocation_id(-1);
+		FileController.saveUserDatabase();
+	}
 
 	public static User getUser(String tel) {
 		for (User user : registeredUsers) {
