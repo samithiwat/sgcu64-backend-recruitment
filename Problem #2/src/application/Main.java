@@ -2,8 +2,10 @@ package application;
 
 import java.util.Scanner;
 
-import component.Location;
-import component.User;
+import controller.LocationController;
+import controller.UserController;
+import models.Location;
+import models.User;
 
 public class Main {
 
@@ -93,7 +95,7 @@ public class Main {
 		if (command.toUpperCase().equals("ADD")) {
 			int location_id = registerLocation();
 			try {
-				Database.addUserToLocation(user, location_id);
+				UserController.addUserToLocation(user, location_id);
 				System.out.println("-----------------------------------------");
 				System.out.println("Successfully checked in!");
 				System.out.println("Press ENTER to continue");
@@ -104,9 +106,9 @@ public class Main {
 		} else {
 			try {
 				int location_id = Integer.parseInt(command);
-				if (Database.isLocationExist(location_id)) {
+				if (LocationController.isLocationExist(location_id)) {
 					try {
-						Database.addUserToLocation(user, location_id);
+						UserController.addUserToLocation(user, location_id);
 						System.out.println("-----------------------------------------");
 						System.out.println("Successfully checked in!");
 						System.out.println("Press ENTER to continue");
@@ -135,12 +137,12 @@ public class Main {
 		try {
 			if(User.checkValidTel(tel)) {
 				User user;
-				if ((user = Database.getUser(tel)) == null) {
+				if ((user = UserController.getUser(tel)) == null) {
 					try {
 						System.out.println("-----------------------------------------");
 						System.out.println("New one? registering...");
 						System.out.print("Enter your username (more than 5 character) : ");
-						user = Database.addUser(tel, input.nextLine());
+						user = UserController.addUser(tel, input.nextLine());
 						System.out.println("Successfully registered");
 					} catch (Exception e) {
 						printErrorMessage(e.getMessage());
@@ -164,9 +166,9 @@ public class Main {
 	private static int registerLocation() {
 		System.out.print("Enter location name to register (more than 5 character) : ");
 		String name = input.nextLine();
-		if (!Database.isLocationExist(name)) {
+		if (!LocationController.isLocationExist(name)) {
 			try {
-				Location location = Database.addLocation(name);
+				Location location = LocationController.addLocation(name);
 				return location.getId();
 			} catch (Exception e) {
 				printErrorMessage(e.getMessage());
@@ -184,10 +186,10 @@ public class Main {
 		System.out.print("Enter your phone number : ");
 		String tel = input.nextLine();
 		User user;
-		if ((user = Database.getUser(tel)) != null) {
+		if ((user = UserController.getUser(tel)) != null) {
 			if (user.getLocation_id() != -1) {
 				try {
-					Database.removeUserFromLocation(user);
+					UserController.removeUserFromLocation(user);
 				} catch (Exception e) {
 					printErrorMessage(e.getMessage());
 					return false;
@@ -235,7 +237,7 @@ public class Main {
 	private static void searchUser() {
 		System.out.print("Enter phone number : ");
 		User user;
-		if ((user = Database.getUser(input.nextLine())) != null) {
+		if ((user = UserController.getUser(input.nextLine())) != null) {
 			printUserInfo(user);
 			System.out.println("-----------------------------------------");
 			System.out.println("Press ENTER to continue");

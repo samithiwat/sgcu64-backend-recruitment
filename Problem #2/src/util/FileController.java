@@ -5,8 +5,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 import application.Database;
-import component.Location;
-import component.User;
+import controller.LocationController;
+import controller.UserController;
+import models.Location;
+import models.User;
 
 public class FileController {
 	
@@ -18,7 +20,7 @@ public class FileController {
 		while (buffReader.ready()) {
 			String line = buffReader.readLine();
 			String[] userInfo = line.split(regex);
-			Database.addUser(Integer.parseInt(userInfo[0]),Integer.parseInt(userInfo[1]),userInfo[2],userInfo[3]);
+			UserController.addUser(Integer.parseInt(userInfo[0]),Integer.parseInt(userInfo[1]),userInfo[2],userInfo[3]);
 		}
 		fileReader.close();
 	}
@@ -37,7 +39,7 @@ public class FileController {
 		while (buffReader.ready()) {
 			String line = buffReader.readLine();
 			String[] locationInfo = line.split(regex);
-			Database.addLocation(Integer.parseInt(locationInfo[0]),locationInfo[1]);
+			LocationController.addLocation(Integer.parseInt(locationInfo[0]),locationInfo[1]);
 		}
 		fileReader.close();
 	}

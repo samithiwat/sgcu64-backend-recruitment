@@ -1,13 +1,14 @@
-package component;
+package models;
 
 import application.Database;
+import controller.LocationController;
 
 public class Location {
 	private int id;
 	private String name;
 
 	public Location(String name) throws Exception {
-		setId(Database.getLatestLocationID() + 1);
+		setId(LocationController.getLatestID() + 1);
 		setName(name);
 	}
 
