@@ -14,6 +14,15 @@ public class User {
 		setTel(tel);
 		setUsername(username);
 	}
+	
+	private boolean isNumberic(String str) {
+		try {
+			Integer.parseInt(str);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
 
 	public int getId() {
 		return id;
@@ -34,10 +43,13 @@ public class User {
 	public String getTel() {
 		return tel;
 	}
-
+	
 	public void setTel(String tel) throws Exception {
 		if (tel.length() != 10)
-			throw new Exception("Invalid input");
+			throw new Exception("Phone number must has 10 digits");
+		if(!isNumberic(tel)) {
+			throw new Exception("Invalid Input");
+		}
 		this.tel = tel;
 	}
 	

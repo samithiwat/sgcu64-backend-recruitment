@@ -62,7 +62,7 @@ public class Main {
 		if ((currentLocation = user.onLocation()) != null) {
 			System.out.println("  Current at : " + currentLocation.getName());
 		} else {
-			System.out.println(" Current at : Not check in yet");
+			System.out.println("  Current at : Not check in yet");
 		}
 	}
 
@@ -216,11 +216,13 @@ public class Main {
 			for (Location location : Database.checkedInLocations) {
 				System.out.println("  " + location.getId() + ". " + location.getName() + ": " + location.getNUsers());
 			}
+			System.out.println("-----------------------------------------");
 			System.out.println("Press ENTER to continue");
 			input.nextLine();
 		} else {
 			System.out.println("-----------------------------------------");
 			System.out.println("Not have any registered location yet.");
+			System.out.println("-----------------------------------------");
 			System.out.println("Press ENTER to continue");
 			input.nextLine();
 		}
@@ -231,6 +233,7 @@ public class Main {
 		User user;
 		if ((user = Database.getUser(input.nextLine())) != null) {
 			printUserInfo(user);
+			System.out.println("-----------------------------------------");
 			System.out.println("Press ENTER to continue");
 			input.nextLine();
 		} else {
