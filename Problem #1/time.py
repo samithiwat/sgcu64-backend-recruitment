@@ -156,7 +156,7 @@ try:
         print()
         printNum(calTotalTime(time))
         print("\nPress ENTER to start count down")
-        print("Ctrl + C to termiate program")
+        print("Ctrl + C to terminate program")
         input();
         countDown(time)
     else :
