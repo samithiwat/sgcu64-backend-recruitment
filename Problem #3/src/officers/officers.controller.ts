@@ -28,8 +28,28 @@ export class OfficersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.officersService.findOne(+id);
+  findId(@Param('id') id: string) {
+    return this.officersService.findId(id);
+  }
+
+  @Get('firstname/:firstname')
+  findFirstname(@Param('firstname') firstname: string) {
+    return this.officersService.findFirstname(firstname);
+  }
+
+  @Get('lastname/:lastname')
+  findLastname(@Param('lastname') lastname: string) {
+    return this.officersService.findLastname(lastname);
+  }
+
+  @Get('role/:role')
+  findRole(@Param('role') role: string) {
+    return this.officersService.findRole(role);
+  }
+
+  @Get('factory/:amount')
+  factory(@Param('amount') amount: number) {
+    return this.officersService.factory(amount);
   }
 
   @Patch(':id')
