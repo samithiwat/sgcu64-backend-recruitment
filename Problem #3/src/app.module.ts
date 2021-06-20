@@ -3,7 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { OfficersModule } from './officers/officers.module';
 import config from './config/config';
+import { Officer } from './officers/entities/officer.entity';
 
 @Module({
   imports: [
@@ -14,17 +16,19 @@ import config from './config/config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        type: 'mysql',
+        type: 'postgres',
         host: configService.get<string>('database.host'),
         port: configService.get<number>('database.port'),
         username: configService.get<string>('database.username'),
         password: configService.get<string>('database.password'),
         database: configService.get<string>('database.name'),
+        entities: [Officer],
         synchronize: false,
         authoLoadEntities: true,
       }),
       inject: [ConfigService],
     }),
+    OfficersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { config as dotenvConfig } from 'dotenv';
 import { ConnectionOptions } from 'typeorm';
 
@@ -11,8 +12,8 @@ const options: ConnectionOptions = {
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
   synchronize: false,
-  entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+  entities: [__dirname + '/**/entities/*.entity{.ts,.js}'],
+  migrations: [__dirname + '/migrations/*{.ts,.js}'],
   cli: {
     migrationsDir: 'src/migrations',
   },

@@ -18,7 +18,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "node ./node_modules/typeorm/cli.js --config src/typeorm-config.ts"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",
@@ -28,6 +29,7 @@
     "@nestjs/swagger": "^4.8.1",
     "@nestjs/typeorm": "^7.1.5",
     "mysql2": "^2.2.5",
+    "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
