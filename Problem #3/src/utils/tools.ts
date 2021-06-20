@@ -41,6 +41,21 @@ export class Tools {
       'Blane',
       'Michel',
       'John',
+      'Atom',
+      'Kenny',
+      'Samantha',
+      'Susan',
+      'Lowe',
+      'Angle',
+      'Dave',
+      'David',
+      'Abdul',
+      'Mohamet',
+      'Dele',
+      'Mephis',
+      'Jinny',
+      'Catherine',
+      'Anne',
     ];
     const nameListLen = nameList.length;
     const result: string[] = [];
@@ -67,6 +82,20 @@ export class Tools {
       'Bevan',
       'Shaw',
       'Pruitt',
+      'Rice',
+      'Xavi',
+      'Stone',
+      'Robert',
+      'Tony',
+      'Eric',
+      'Matteus',
+      'Iniesta',
+      'Puyol',
+      'Alonse',
+      'Ramos',
+      'Thaigo',
+      'Rafinha',
+      'Pique',
     ];
     const nameListLen = nameList.length;
     const result: string[] = [];

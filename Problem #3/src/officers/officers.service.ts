@@ -25,7 +25,46 @@ export class OfficersService {
     // return this.officerRepository.find();
   }
 
-  findId(id: string) {
+  search(query): Officer[] {
+    let filter: Officer[] = [];
+    let temp: Officer[] = [];
+    let result: Officer[] = [];
+    let isFiltered = false;
+    if (query.id != 'undefined' && query.id) {
+      filter = this.findId(query.id, this.officers);
+      isFiltered = true;
+    }
+    result = filter;
+    temp = this.officers;
+    if (query.firstname != 'undefined' && query.firstname) {
+      if (filter.length > 0 || isFiltered) {
+        temp = filter;
+      }
+      filter = this.findFirstname(query.firstname, temp);
+      isFiltered = true;
+    }
+    result = filter;
+    temp = this.officers;
+    if (query.lastname != 'undefined' && query.lastname) {
+      if (filter.length > 0 || isFiltered) {
+        temp = filter;
+      }
+      filter = this.findLastname(query.lastname, temp);
+      isFiltered = true;
+    }
+    result = filter;
+    temp = this.officers;
+    if (query.role != 'undefined' && query.role) {
+      if (filter.length > 0 || isFiltered) {
+        temp = filter;
+      }
+      filter = this.findRole(query.role, temp);
+    }
+    result = filter;
+    return result;
+  }
+
+  getId(id: string) {
     for (const officer of this.officers) {
       if (officer.uid === id) {
         return JSON.stringify(officer);
@@ -34,70 +73,84 @@ export class OfficersService {
     // return this.officerRepository.findOne(id);
   }
 
-  findFirstname(firstname: string) {
+  findId(id: string, filters: Officer[]) {
     const result: Officer[] = [];
-    for (const officer of this.officers) {
-      if (officer.firstName === firstname) {
+    for (const officer of filters) {
+      if (officer.uid === id) {
         result.push(officer);
       }
     }
     return result;
   }
 
-  findLastname(lastname: string) {
+  findFirstname(firstname: string, filter: Officer[]) {
     const result: Officer[] = [];
-    for (const officer of this.officers) {
-      if (officer.lastName === lastname) {
+    for (const officer of filter) {
+      if (officer.firstName.toLowerCase() === firstname.toLowerCase()) {
         result.push(officer);
       }
     }
     return result;
   }
 
-  findRole(role: string) {
+  findLastname(lastname: string, filter: Officer[]) {
     const result: Officer[] = [];
-    for (const officer of this.officers) {
-      if (officer.role === role) {
+    for (const officer of filter) {
+      if (officer.lastName.toLowerCase() === lastname.toLowerCase()) {
         result.push(officer);
       }
     }
     return result;
   }
 
-  update(id: number, updateOfficerDto: UpdateOfficerDto) {
-    if (id - 1 < this.officers.length) {
+  findRole(role: string, filter: Officer[]) {
+    const result: Officer[] = [];
+    for (const officer of filter) {
+      if (officer.role.toLowerCase() === role.toLowerCase()) {
+        result.push(officer);
+      }
+    }
+    return result;
+  }
+
+  update(id: string, updateOfficerDto: UpdateOfficerDto) {
+    console.log(id);
+    console.log(updateOfficerDto);
+    const officer: Officer = this.findId(id, this.officers)[0];
+    if (officer) {
+      console.log('ENTER');
       if (
         typeof updateOfficerDto.firstName != 'undefined' &&
         updateOfficerDto.firstName
       ) {
-        this.officers[id - 1].firstName = updateOfficerDto.firstName;
+        officer.firstName = updateOfficerDto.firstName;
       }
       if (
         typeof updateOfficerDto.lastName != 'undefined' &&
         updateOfficerDto.lastName
       ) {
-        this.officers[id - 1].lastName = updateOfficerDto.lastName;
+        officer.lastName = updateOfficerDto.lastName;
       }
       if (
         typeof updateOfficerDto.password != 'undefined' &&
         updateOfficerDto.password
       ) {
-        this.officers[id - 1].password = updateOfficerDto.password;
+        officer.password = updateOfficerDto.password;
       }
       if (
         typeof updateOfficerDto.role != 'undefined' &&
         updateOfficerDto.role
       ) {
-        this.officers[id - 1].role = updateOfficerDto.role;
+        officer.role = updateOfficerDto.role;
       }
       if (
         typeof updateOfficerDto.salary != 'undefined' &&
         updateOfficerDto.salary
       ) {
-        this.officers[id - 1].salary = updateOfficerDto.salary;
+        officer.salary = updateOfficerDto.salary;
       }
       if (typeof updateOfficerDto.uid != 'undefined' && updateOfficerDto.uid) {
-        this.officers[id - 1].uid = updateOfficerDto.uid;
+        officer.uid = updateOfficerDto.uid;
       }
       return HttpCode(201);
     }
