@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { OfficersModule } from './officers/officers.module';
 import config from './config/config';
 import { Officer } from './officers/entities/officer.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { Officer } from './officers/entities/officer.entity';
       inject: [ConfigService],
     }),
     OfficersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

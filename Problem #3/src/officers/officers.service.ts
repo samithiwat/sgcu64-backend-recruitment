@@ -1,4 +1,4 @@
-import { HttpCode, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOfficerDto } from './dto/create-officer.dto';
@@ -15,17 +15,17 @@ export class OfficersService {
     private officerRepository: Repository<Officer>,
   ) {}
 
-  create(createOfficerDto: CreateOfficerDto) {
+  public create(createOfficerDto: CreateOfficerDto) {
     this.officers.push(createOfficerDto);
     // return this.officerRepository.create(createOfficerDto);
   }
 
-  findAll() {
+  public findAll() {
     return this.officers;
     // return this.officerRepository.find();
   }
 
-  search(query): Officer[] {
+  public async search(query): Promise<Officer[]> {
     let filter: Officer[] = [];
     let temp: Officer[] = [];
     let result: Officer[] = [];
@@ -64,16 +64,17 @@ export class OfficersService {
     return result;
   }
 
-  getId(id: string) {
+  public async getId(id: string): Promise<Officer | undefined> {
     for (const officer of this.officers) {
       if (officer.uid === id) {
-        return JSON.stringify(officer);
+        // console.log(officer);
+        return officer;
       }
     }
     // return this.officerRepository.findOne(id);
   }
 
-  findId(id: string, filters: Officer[]) {
+  public findId(id: string, filters: Officer[]) {
     const result: Officer[] = [];
     for (const officer of filters) {
       if (officer.uid === id) {
@@ -83,7 +84,7 @@ export class OfficersService {
     return result;
   }
 
-  findFirstname(firstname: string, filter: Officer[]) {
+  public findFirstname(firstname: string, filter: Officer[]) {
     const result: Officer[] = [];
     for (const officer of filter) {
       if (officer.firstName.toLowerCase() === firstname.toLowerCase()) {
@@ -93,7 +94,7 @@ export class OfficersService {
     return result;
   }
 
-  findLastname(lastname: string, filter: Officer[]) {
+  public findLastname(lastname: string, filter: Officer[]) {
     const result: Officer[] = [];
     for (const officer of filter) {
       if (officer.lastName.toLowerCase() === lastname.toLowerCase()) {
@@ -103,7 +104,7 @@ export class OfficersService {
     return result;
   }
 
-  findRole(role: string, filter: Officer[]) {
+  public findRole(role: string, filter: Officer[]) {
     const result: Officer[] = [];
     for (const officer of filter) {
       if (officer.role.toLowerCase() === role.toLowerCase()) {
@@ -113,12 +114,12 @@ export class OfficersService {
     return result;
   }
 
-  update(id: string, updateOfficerDto: UpdateOfficerDto) {
-    console.log(id);
-    console.log(updateOfficerDto);
-    const officer: Officer = this.findId(id, this.officers)[0];
+  public async update(
+    id: string,
+    updateOfficerDto: UpdateOfficerDto,
+  ): Promise<boolean> {
+    const officer: Officer = await this.getId(id);
     if (officer) {
-      console.log('ENTER');
       if (
         typeof updateOfficerDto.firstName != 'undefined' &&
         updateOfficerDto.firstName
@@ -152,20 +153,24 @@ export class OfficersService {
       if (typeof updateOfficerDto.uid != 'undefined' && updateOfficerDto.uid) {
         officer.uid = updateOfficerDto.uid;
       }
-      return HttpCode(201);
+      return true;
     }
-    return HttpCode(400);
+    return false;
     // return this.officerRepository.update(id, updateOfficerDto);
   }
 
-  remove(id: number) {
-    if (id - 1 < this.officers.length) {
-      this.officers.splice(id - 1, 1);
+  public async remove(id: string): Promise<boolean> {
+    const index = this.findIndex(id);
+    console.log(index);
+    if (index >= 0) {
+      this.officers.splice(index, 1);
+      return true;
     }
+    return false;
     // return this.officerRepository.delete(id);
   }
 
-  factory(nData: number): Officer[] {
+  public factory(nData: number): Officer[] {
     const uidList = Tools.createRandomUID(nData);
     const firstnameList = Tools.createRandomFirstname(nData);
     const lastnameList = Tools.createRandomLastname(nData);
@@ -183,5 +188,14 @@ export class OfficersService {
       });
     }
     return this.officers;
+  }
+  private findIndex(id: string): number {
+    for (let index = 0; index < this.officers.length; index++) {
+      if (this.officers[index].uid === id) {
+        console.log(this.officers[index]);
+        return index;
+      }
+    }
+    return -1;
   }
 }
