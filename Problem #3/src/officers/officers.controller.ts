@@ -17,7 +17,6 @@ import { OfficersService } from './officers.service';
 import { CreateOfficerDto } from './dto/create-officer.dto';
 import { UpdateOfficerDto } from './dto/update-officer.dto';
 import {
-  ApiBearerAuth,
   ApiBody,
   ApiHeader,
   ApiOperation,
@@ -26,19 +25,26 @@ import {
 } from '@nestjs/swagger';
 import { Officer } from './interface/officer.interface';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Roles } from 'src/role/role.decorator';
+import { Role } from 'src/role/role.enum';
+import { RoleGuard } from 'src/role/role.guard';
 
 @ApiTags('officers')
 @Controller('officers')
 export class OfficersController {
   constructor(private readonly officersService: OfficersService) {}
 
-  @ApiBody({ type: CreateOfficerDto })
   @Post()
+  @Roles(Role.HR)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @ApiBody({ type: CreateOfficerDto })
   create(@Body() createOfficerDto: CreateOfficerDto) {
     return this.officersService.create(createOfficerDto);
   }
 
   @Get()
+  @Roles(Role.HR)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   findAll() {
     return this.officersService.findAll();
   }
@@ -50,7 +56,6 @@ export class OfficersController {
     description: 'check if fetch with cookie',
   })
   async findMe(@Request() req) {
-    // console.log(req);
     return req.user;
   }
 
@@ -59,6 +64,8 @@ export class OfficersController {
   @ApiQuery({ name: 'role', required: false })
   @ApiQuery({ name: 'id', required: false })
   @Get('search')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(Role.HR)
   async search(@Query() query) {
     const officers = await this.officersService.search(query);
     if (officers.length > 0) {
@@ -67,6 +74,8 @@ export class OfficersController {
     throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
   }
 
+  @Roles(Role.HR)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(':id')
   async findId(@Param('id') id: string, @Req() req) {
     console.log(req.cookies['access_token']);
@@ -85,6 +94,8 @@ export class OfficersController {
   }
 
   @ApiBody({ type: UpdateOfficerDto })
+  @Roles(Role.HR)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -96,6 +107,8 @@ export class OfficersController {
     throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
   }
 
+  @Roles(Role.HR)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<HttpException> {
     if (await this.officersService.remove(id)) {
