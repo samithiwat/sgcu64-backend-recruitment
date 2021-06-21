@@ -9,7 +9,16 @@ import { Tools } from 'src/utils/tools';
 
 @Injectable()
 export class OfficersService {
-  private readonly officers: Officer[] = [];
+  private readonly officers: Officer[] = [
+    {
+      uid: '1',
+      firstName: 'smithy',
+      lastName: 'binchu',
+      password: '!password',
+      role: 'HR',
+      salary: 50000,
+    },
+  ];
   constructor(
     @InjectRepository(OfficerEntity)
     private officerRepository: Repository<Officer>,

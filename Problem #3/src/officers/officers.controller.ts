@@ -9,12 +9,23 @@ import {
   Query,
   HttpException,
   HttpStatus,
+  Req,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { OfficersService } from './officers.service';
 import { CreateOfficerDto } from './dto/create-officer.dto';
 import { UpdateOfficerDto } from './dto/update-officer.dto';
-import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiHeader,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Officer } from './interface/officer.interface';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('officers')
 @Controller('officers')
@@ -32,6 +43,17 @@ export class OfficersController {
     return this.officersService.findAll();
   }
 
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: "Get officer's info",
+    description: 'check if fetch with cookie',
+  })
+  async findMe(@Request() req) {
+    // console.log(req);
+    return req.user;
+  }
+
   @ApiQuery({ name: 'firstname', required: false })
   @ApiQuery({ name: 'lastname', required: false })
   @ApiQuery({ name: 'role', required: false })
@@ -46,7 +68,9 @@ export class OfficersController {
   }
 
   @Get(':id')
-  async findId(@Param('id') id: string) {
+  async findId(@Param('id') id: string, @Req() req) {
+    console.log(req.cookies['access_token']);
+    console.log(req.headers);
     const officer: Officer = await this.officersService.getId(id);
     if (officer) {
       const { password, ...result } = officer;

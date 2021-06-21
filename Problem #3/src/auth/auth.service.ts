@@ -11,7 +11,6 @@ export class AuthService {
 
   async validateUser(uid: string, password: string): Promise<any> {
     const officer = await this.officerService.getId(uid);
-    console.log(officer);
     if (officer && officer.password === password) {
       const { password, ...result } = officer;
       return result;
@@ -19,11 +18,11 @@ export class AuthService {
     return null;
   }
 
-  async login(officer: any) {
+  async createToken(officer: any) {
     const payload = {
       uid: officer.uid,
-      firstname: officer.firstname,
-      lastname: officer.lastname,
+      firstname: officer.firstName,
+      lastname: officer.lastName,
       role: officer.role,
       salary: officer.salary,
     };
