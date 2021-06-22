@@ -17,6 +17,7 @@ import { OfficersService } from './officers.service';
 import { CreateOfficerDto } from './dto/create-officer.dto';
 import { UpdateOfficerDto } from './dto/update-officer.dto';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiHeader,
   ApiOperation,
@@ -30,6 +31,7 @@ import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
 import { Officer } from './officers';
 import { Tools } from 'src/utils/tools';
 
+@ApiBearerAuth()
 @ApiTags('officers')
 @Controller('officers')
 export class OfficersController {
@@ -158,12 +160,5 @@ export class OfficersController {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
     throw new HttpException('Insufficiency permission', HttpStatus.FORBIDDEN);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('permission')
-  permission(@Req() req): boolean {
-    const ability = this.caslAbilityFactory.createForUser(req.user);
-    return ability.can(Action.UPDATE, new Officer(req.user), 'password');
   }
 }

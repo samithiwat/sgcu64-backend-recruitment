@@ -8,9 +8,12 @@ async function bootstrap() {
   app.use(cookieParser());
 
   const config = new DocumentBuilder()
-    .setTitle('API Docs')
-    .setDescription('Doc for API')
+    .setTitle('SGCU API Docs')
+    .setDescription('Doc for SGCU company')
+    .addBearerAuth()
     .setVersion('1.0')
+    .addTag('auth')
+    .addTag('officers')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

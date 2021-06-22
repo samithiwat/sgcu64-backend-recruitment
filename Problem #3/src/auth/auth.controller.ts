@@ -8,7 +8,7 @@ import { ApiTags } from '@nestjs/swagger';
 export class AuthController {
   constructor(private authStrategy: AuthStrategy) {}
 
-  @Post('login')
+  @Post('authorize')
   async login(@Body() body: AuthDto, @Res({ passthrough: true }) res) {
     return await this.authStrategy.validate(body.uid, body.password, res);
     // return this.authStrategy.validate(body.uid, body.password);

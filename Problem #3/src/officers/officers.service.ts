@@ -20,6 +20,14 @@ export class OfficersService {
       role: 'HR',
       salary: 50000,
     },
+    {
+      uid: '2',
+      firstName: 'someone',
+      lastName: 'anyone',
+      password: '!password',
+      role: 'employee',
+      salary: 30000,
+    },
   ];
 
   constructor(
