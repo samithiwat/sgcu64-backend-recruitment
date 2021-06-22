@@ -5,4 +5,8 @@ export class Officer {
   lastName: string;
   role: string;
   salary: number;
+
+  constructor(attrs: Officer) {
+    Object.assign(this, attrs);
+  }
 }

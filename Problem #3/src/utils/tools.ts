@@ -1,8 +1,38 @@
 /* eslint-disable prettier/prettier */
 
 export class Tools {
-  public static getObjLen(obj: Object) {
-    var size = 0;
+  public static async isDataValid(obj: any): Promise<boolean> {
+    let countValid = 0;
+    const objLen = this.getObjLen(obj);
+    if (typeof obj.uid != 'undefined' && obj.uid) {
+      countValid++;
+    }
+    if (typeof obj.firstName != 'undefined' && obj.firstName) {
+      countValid++;
+    }
+    if (typeof obj.lastName != 'undefined' && obj.lastName) {
+      countValid++;
+    }
+    if (typeof obj.password != 'undefined' && obj.password) {
+      countValid++;
+    }
+    if (typeof obj.role != 'undefined' && obj.role) {
+      if (obj.role === 'HR' || obj.role === 'employee') {
+        countValid++;
+      }
+      return false;
+    }
+    if (typeof obj.salary != 'undefined' && obj.salary) {
+      countValid++;
+    }
+    if (countValid === objLen) {
+      return true;
+    }
+    return false;
+  }
+
+  public static getObjLen(obj: any) {
+    let size = 0;
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         size++;

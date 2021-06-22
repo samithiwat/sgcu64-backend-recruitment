@@ -7,8 +7,6 @@ import { OfficersModule } from './officers/officers.module';
 import config from './config/config';
 import { Officer } from './officers/entities/officer.entity';
 import { AuthModule } from './auth/auth.module';
-import { APP_GUARD } from '@nestjs/core';
-import { RoleGuard } from './role/role.guard';
 import { CaslModule } from './casl/casl.module';
 
 @Module({

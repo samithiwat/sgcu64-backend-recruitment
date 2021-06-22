@@ -3,9 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOfficerDto } from './dto/create-officer.dto';
 import { UpdateOfficerDto } from './dto/update-officer.dto';
-import { Officer } from './interface/officer.interface';
+import { Officer, OfficerInfo } from './interface/officer.interface';
 import { Officer as OfficerEntity } from './entities/officer.entity';
 import { Tools } from 'src/utils/tools';
+import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
+import { Action } from 'src/role/role.enum';
 
 @Injectable()
 export class OfficersService {
@@ -23,69 +25,27 @@ export class OfficersService {
   constructor(
     @InjectRepository(OfficerEntity)
     private officerRepository: Repository<Officer>,
+    private caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   public async create(createOfficerDto: CreateOfficerDto): Promise<boolean> {
-    let isValidFirstName,
-      isValidLastName,
-      isValidUid,
-      isValidPassword,
-      isValidRole,
-      isValidSalary = false;
-    if (
-      typeof createOfficerDto.firstName != 'undefined' &&
-      createOfficerDto.firstName
-    ) {
-      isValidFirstName = true;
-    }
-    if (
-      typeof createOfficerDto.lastName != 'undefined' &&
-      createOfficerDto.lastName
-    ) {
-      isValidLastName = true;
-    }
-    if (typeof createOfficerDto.uid != 'undefined' && createOfficerDto.uid) {
+    if (Tools.isDataValid(createOfficerDto)) {
       if (!(await this.getId(createOfficerDto.uid))) {
-        isValidUid = true;
+        this.officers.push(createOfficerDto);
+        return true;
       }
-    }
-    if (
-      typeof createOfficerDto.password != 'undefined' &&
-      createOfficerDto.password
-    ) {
-      isValidPassword = true;
-    }
-    if (typeof createOfficerDto.role != 'undefined' && createOfficerDto.role) {
-      if (
-        createOfficerDto.role === 'HR' ||
-        createOfficerDto.role === 'employee'
-      ) {
-        isValidRole = true;
-      }
-    }
-    if (
-      typeof createOfficerDto.salary != 'undefined' &&
-      createOfficerDto.salary
-    ) {
-      isValidSalary = true;
-    }
-    if (
-      isValidUid &&
-      isValidFirstName &&
-      isValidLastName &&
-      isValidPassword &&
-      isValidRole &&
-      isValidSalary
-    ) {
-      this.officers.push(createOfficerDto);
-      return true;
     }
     return false;
     // return this.officerRepository.create(createOfficerDto);
   }
 
   public findAll() {
-    return this.officers;
+    const result: OfficerInfo[] = [];
+    for (const officer of this.officers) {
+      const { password, ...userInfo } = officer;
+      result.push(userInfo);
+    }
+    return result;
     // return this.officerRepository.find();
   }
 

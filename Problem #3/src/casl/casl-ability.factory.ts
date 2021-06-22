@@ -20,16 +20,14 @@ export class CaslAbilityFactory {
       Ability<[Action, Subjects]>
     >(Ability as AbilityClass<AppAbility>);
 
-    can(Action.UPDATE, Officer, ['password'], { uid: user.uid });
     if (user.role === Role.HR) {
       can(Action.MANAGE, 'all');
     }
-    // cannot(Action.DELETE, Officer,{})
+    can(Action.UPDATE, Officer, ['password'], { uid: user.uid });
+    cannot(Action.UPDATE, Officer, ['uid']);
     return build({
       detectSubjectType: (item) =>
         item.constructor as ExtractSubjectType<Subjects>,
     });
   }
-  ability = new Ability<[Action, Subjects]>();
-  define;
 }
