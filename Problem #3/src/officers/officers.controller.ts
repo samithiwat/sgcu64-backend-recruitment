@@ -14,19 +14,25 @@ import {
   Request,
 } from '@nestjs/common';
 import { OfficersService } from './officers.service';
-import { CreateOfficerDto } from './dto/create-officer.dto';
+import { CreateOfficerDto, OfficerInfoDto } from './dto/create-officer.dto';
 import { UpdateOfficerDto } from './dto/update-officer.dto';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiHeader,
+  ApiOkResponse,
   ApiOperation,
   ApiQuery,
   ApiTags,
+  ApiUnauthorizedResponse,
+  getSchemaPath,
 } from '@nestjs/swagger';
 import { Officer as OfficerInterface } from './interface/officer.interface';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { Action } from 'src/role/role.enum';
+import { Action, Role } from 'src/role/role.enum';
 import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
 import { Officer } from './officers';
 import { Tools } from 'src/utils/tools';
@@ -42,24 +48,80 @@ export class OfficersController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  @ApiBody({ type: CreateOfficerDto })
+  @ApiOperation({
+    summary: 'Create a user account',
+    description: "add an officer's information to a database.",
+  })
+  @ApiCreatedResponse({
+    description: 'Successfully create user account',
+    schema: { $ref: getSchemaPath(CreateOfficerDto) },
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid request body',
+    schema: {
+      properties: {
+        message: { type: 'string', example: 'Invalid request body' },
+        status: { type: 'number', example: '400' },
+      },
+    },
+  })
+  @ApiForbiddenResponse({
+    description: 'Insufficiency permission',
+    schema: {
+      properties: {
+        message: { type: 'string', example: 'Insufficiency permission' },
+        status: { type: 'number', example: '403' },
+      },
+    },
+  })
+  @ApiBody({
+    type: CreateOfficerDto,
+    required: true,
+    description: "User's information",
+  })
   async create(
     @Req() req,
     @Body() createOfficerDto: CreateOfficerDto,
-  ): Promise<HttpException> {
+  ): Promise<string | HttpException> {
     const ability = this.caslAbilityFactory.createForUser(req.user);
     if (ability.can(Action.CREATE, Officer)) {
       if (await this.officersService.create(createOfficerDto)) {
-        throw new HttpException(
-          'Successfully add user to database',
-          HttpStatus.CREATED,
-        );
+        return JSON.stringify(createOfficerDto);
       }
       throw new HttpException('invalid request body', HttpStatus.BAD_REQUEST);
     }
     throw new HttpException('Insufficiency permission', HttpStatus.FORBIDDEN);
   }
 
+  @ApiOperation({
+    summary: 'Get all officer information',
+    description: 'return all information of officers in object array',
+  })
+  @ApiOkResponse({
+    description: 'OK',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          uid: { type: 'string' },
+          firstname: { type: 'string' },
+          lastname: { type: 'string' },
+          role: { type: 'string' },
+          salray: { type: 'number' },
+        },
+      },
+    },
+  })
+  @ApiForbiddenResponse({
+    description: 'Insufficiency permission',
+    schema: {
+      properties: {
+        message: { type: 'string', example: 'Insufficiency permission' },
+        status: { type: 'number', example: '403' },
+      },
+    },
+  })
   @Get()
   @UseGuards(JwtAuthGuard)
   findAll(@Req() req): string | HttpException {
@@ -69,13 +131,37 @@ export class OfficersController {
     }
     throw new HttpException('Insufficiency permission', HttpStatus.FORBIDDEN);
   }
-
+  @ApiOperation({
+    summary: 'Get your information',
+    description: 'Return your information in JSON if you are logged in',
+  })
+  @ApiOkResponse({
+    description: 'OK',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          uid: { type: 'string' },
+          firstname: { type: 'string' },
+          lastname: { type: 'string' },
+          role: { type: 'string' },
+          salray: { type: 'number' },
+        },
+      },
+    },
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorize',
+    schema: {
+      properties: {
+        message: { type: 'string', example: 'Unauthorize' },
+        status: { type: 'number', example: '401' },
+      },
+    },
+  })
   @Get('me')
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({
-    summary: "Get officer's info",
-    description: 'check if fetch with cookie',
-  })
   async findMe(@Request() req): Promise<string> {
     const user = await this.officersService.getId(req.user.uid);
     return JSON.stringify(user);
@@ -96,7 +182,7 @@ export class OfficersController {
       }
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
-    throw new HttpException('Insufficiency permission', HttpStatus.FORBIDDEN);
+    throw new HttpException('Unauthorize!', HttpStatus.UNAUTHORIZED);
   }
 
   @Get('factory/:amount')

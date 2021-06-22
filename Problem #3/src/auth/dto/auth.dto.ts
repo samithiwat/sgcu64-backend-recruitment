@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'User Id' })
   uid: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: "User's password" })
   password: string;
 }
