@@ -1,6 +1,26 @@
 /* eslint-disable prettier/prettier */
 
 export class Tools {
+  public static getObjLen(obj: Object) {
+    var size = 0;
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        size++;
+      }
+    }
+    return size;
+  }
+
+  public static findIndex(id: string, array: any[]): number {
+    for (let index = 0; index < array.length; index++) {
+      if (array[index].uid === id) {
+        console.log(array[index]);
+        return index;
+      }
+    }
+    return -1;
+  }
+
   public static getRandomNumber(max: number): number {
     return Math.floor(Math.random() * max);
   }

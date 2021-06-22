@@ -1,7 +1,7 @@
-import { Officer } from './officers';
+import { Officers } from './officers';
 
 describe('Officers', () => {
   it('should be defined', () => {
-    expect(new Officer()).toBeDefined();
+    expect(new Officers()).toBeDefined();
   });
 });

@@ -19,13 +19,68 @@ export class OfficersService {
       salary: 50000,
     },
   ];
+
   constructor(
     @InjectRepository(OfficerEntity)
     private officerRepository: Repository<Officer>,
   ) {}
 
-  public create(createOfficerDto: CreateOfficerDto) {
-    this.officers.push(createOfficerDto);
+  public async create(createOfficerDto: CreateOfficerDto): Promise<boolean> {
+    let isValidFirstName,
+      isValidLastName,
+      isValidUid,
+      isValidPassword,
+      isValidRole,
+      isValidSalary = false;
+    if (
+      typeof createOfficerDto.firstName != 'undefined' &&
+      createOfficerDto.firstName
+    ) {
+      isValidFirstName = true;
+    }
+    if (
+      typeof createOfficerDto.lastName != 'undefined' &&
+      createOfficerDto.lastName
+    ) {
+      isValidLastName = true;
+    }
+    if (typeof createOfficerDto.uid != 'undefined' && createOfficerDto.uid) {
+      if (!(await this.getId(createOfficerDto.uid))) {
+        isValidUid = true;
+      }
+    }
+    if (
+      typeof createOfficerDto.password != 'undefined' &&
+      createOfficerDto.password
+    ) {
+      isValidPassword = true;
+    }
+    if (typeof createOfficerDto.role != 'undefined' && createOfficerDto.role) {
+      if (
+        createOfficerDto.role === 'HR' ||
+        createOfficerDto.role === 'employee'
+      ) {
+        isValidRole = true;
+      }
+    }
+    if (
+      typeof createOfficerDto.salary != 'undefined' &&
+      createOfficerDto.salary
+    ) {
+      isValidSalary = true;
+    }
+    if (
+      isValidUid &&
+      isValidFirstName &&
+      isValidLastName &&
+      isValidPassword &&
+      isValidRole &&
+      isValidSalary
+    ) {
+      this.officers.push(createOfficerDto);
+      return true;
+    }
+    return false;
     // return this.officerRepository.create(createOfficerDto);
   }
 
@@ -169,7 +224,7 @@ export class OfficersService {
   }
 
   public async remove(id: string): Promise<boolean> {
-    const index = this.findIndex(id);
+    const index = Tools.findIndex(id, this.officers);
     console.log(index);
     if (index >= 0) {
       this.officers.splice(index, 1);
@@ -197,14 +252,5 @@ export class OfficersService {
       });
     }
     return this.officers;
-  }
-  private findIndex(id: string): number {
-    for (let index = 0; index < this.officers.length; index++) {
-      if (this.officers[index].uid === id) {
-        console.log(this.officers[index]);
-        return index;
-      }
-    }
-    return -1;
   }
 }

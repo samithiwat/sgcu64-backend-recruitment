@@ -38,8 +38,15 @@ export class OfficersController {
   @Roles(Role.HR)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @ApiBody({ type: CreateOfficerDto })
-  create(@Body() createOfficerDto: CreateOfficerDto) {
-    return this.officersService.create(createOfficerDto);
+  async create(@Req() req, @Body() createOfficerDto: CreateOfficerDto) {
+    console.log(req.user);
+    if (await this.officersService.create(createOfficerDto)) {
+      throw new HttpException(
+        'Successfully add user to database',
+        HttpStatus.CREATED,
+      );
+    }
+    throw new HttpException('invalid request body', HttpStatus.BAD_REQUEST);
   }
 
   @Get()
