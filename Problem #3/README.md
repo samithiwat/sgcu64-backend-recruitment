@@ -137,7 +137,8 @@ Swagger UI
 
   > I would recommen yarn<br>
   >
-  > > [download nodejs and npm](https://nodejs.org/en/) > > [download yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable)
+  > > [download nodejs and npm](https://nodejs.org/en/)
+  > > [download yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable)
 
 ## Feature
 
