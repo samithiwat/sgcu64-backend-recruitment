@@ -403,7 +403,7 @@ export class OfficersController {
   })
   @ApiOkResponse({
     description: "Return all officer's info",
-    schema: { $ref: getSchemaPath(OfficerInfo) },
+    schema: { type: 'array', items: { $ref: getSchemaPath(CreateOfficerDto) } },
   })
   @Get('factory/:amount')
   factory(@Param('amount') amount: number): OfficerInterface[] {
