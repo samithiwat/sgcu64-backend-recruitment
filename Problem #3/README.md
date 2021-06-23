@@ -135,9 +135,10 @@ Swagger UI
 
 - Npm or Yarn
 
-  > I would recommen yarn<br>
-  >
+  > I would recommend yarn<br>
+
   > > [download nodejs and npm](https://nodejs.org/en/)
+
   > > [download yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable)
 
 ## Feature
