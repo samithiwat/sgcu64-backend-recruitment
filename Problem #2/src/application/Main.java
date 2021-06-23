@@ -94,14 +94,16 @@ public class Main {
 	private static void checkInLocation(User user, String command) {
 		if (command.toUpperCase().equals("ADD")) {
 			int location_id = registerLocation();
-			try {
-				UserController.addUserToLocation(user, location_id);
-				System.out.println("-----------------------------------------");
-				System.out.println("Successfully checked in!");
-				System.out.println("Press ENTER to continue");
-				input.nextLine();
-			} catch (Exception e) {
-				printErrorMessage(e.getMessage());
+			if (location_id > 0) {
+				try {
+					UserController.addUserToLocation(user, location_id);
+					System.out.println("-----------------------------------------");
+					System.out.println("Successfully checked in!");
+					System.out.println("Press ENTER to continue");
+					input.nextLine();
+				} catch (Exception e) {
+					printErrorMessage(e.getMessage());
+				}
 			}
 		} else {
 			try {
@@ -135,7 +137,7 @@ public class Main {
 		System.out.print("Enter your phone number : ");
 		String tel = input.nextLine();
 		try {
-			if(User.checkValidTel(tel)) {
+			if (User.checkValidTel(tel)) {
 				User user;
 				if ((user = UserController.getUser(tel)) == null) {
 					try {
