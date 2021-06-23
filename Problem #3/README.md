@@ -208,7 +208,7 @@ Swagger UI
 
 ### Get Access Token
 
-- to get access token you must login first
+- To get an access token you must login first
 
   <br/>
 
@@ -270,7 +270,10 @@ Swagger UI
 - Enter your access token and then click authorize
 
   ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/UseTokenExample2.PNG?raw=true)
-  **_And now you ready to use the service_**
+
+  <br/>
+
+  **_Now you ready to use the service_**
 
 <br/>
 
