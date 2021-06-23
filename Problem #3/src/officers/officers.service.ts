@@ -6,23 +6,22 @@ import { UpdateOfficerDto } from './dto/update-officer.dto';
 import { Officer, OfficerInfo } from './interface/officer.interface';
 import { Officer as OfficerEntity } from './entities/officer.entity';
 import { Tools } from 'src/utils/tools';
-import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
 
 @Injectable()
 export class OfficersService {
   private readonly officers: Officer[] = [
     {
       uid: '1',
-      firstName: 'smithy',
-      lastName: 'binchu',
+      firstName: 'user1',
+      lastName: 'HR',
       password: '!password',
       role: 'HR',
       salary: 50000,
     },
     {
       uid: '2',
-      firstName: 'someone',
-      lastName: 'anyone',
+      firstName: 'user2',
+      lastName: 'employee',
       password: '!password',
       role: 'employee',
       salary: 30000,
