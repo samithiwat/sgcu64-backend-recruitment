@@ -120,14 +120,25 @@ HR
       - Status Code: 400 Bad Request
 
 #### ทำแบบ Swagger (Spec ที่แสดงอาจไม่ตรงกับ UI ยกมาเพื่อให้เห็นภาพเฉย ๆ)
-![image](https://user-images.githubusercontent.com/24814968/121923165-db069f00-cd64-11eb-9098-539c2e1734a9.png)  
+
+![image](https://user-images.githubusercontent.com/24814968/121923165-db069f00-cd64-11eb-9098-539c2e1734a9.png)
 
 OpenAPI Spec
 
-![image](https://user-images.githubusercontent.com/24814968/121923206-e5289d80-cd64-11eb-950d-8391bcdc27e0.png)  
+![image](https://user-images.githubusercontent.com/24814968/121923206-e5289d80-cd64-11eb-950d-8391bcdc27e0.png)
 
 Swagger UI
 
 # Applicant Section
 
-ตั้งแต่ส่วนนี้ลงไป เป็นส่วนที่ผู้สมัครสามารถแก้ไขได้ตามอัธยาศัย ซึ่งอาจจะเป็นข้อสันนิษฐานหรือไอเดียเพิ่มเติมก็ได้
+## Requirement
+
+- Npm or Yarn
+
+  > I would recommen yarn<br>
+  >
+  > > [download nodejs and npm](https://nodejs.org/en/) > > [download yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable)
+
+## Feature
+
+-

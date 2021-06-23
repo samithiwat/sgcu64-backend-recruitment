@@ -69,4 +69,30 @@
 
 # Applicant Section
 
-ตั้งแต่ส่วนนี้ลงไป เป็นส่วนที่ผู้สมัครสามารถแก้ไขได้ตามอัธยาศัย ซึ่งอาจจะเป็นข้อสันนิษฐานหรือไอเดียเพิ่มเติมก็ได้
+## Requirement
+
+- Python version 3.8.8 +
+  > [you can download here](https://www.anaconda.com/products/individual)
+
+## Feature
+
+- Print digital clock
+- Countdown to 00:00:00
+
+## Manual
+
+1. Make sure you installed python version 3.8.8 or later
+2. Open cmd / terminal
+3. Enter command
+
+   ```
+      cd <program directory>/Problem #1
+   ```
+
+   ```
+      python time.py
+   ```
+
+4. Follow the instruction in program and have fun :D
+
+**NOTE** If you input invalid format the timer program will immediately close.
