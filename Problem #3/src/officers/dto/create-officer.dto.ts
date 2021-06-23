@@ -1,21 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Role } from 'src/role/role.enum';
 
 export class CreateOfficerDto {
-  @ApiProperty({ description: "This is an officer's id" })
+  @ApiProperty({ description: "An officer's id" })
   uid: string;
 
-  @ApiProperty({ description: "This is an officer's password" })
+  @ApiProperty({ description: "An officer's password" })
   password: string;
 
-  @ApiProperty({ description: "This is an officer's firstname" })
+  @ApiProperty({ description: "An officer's firstname" })
   firstName: string;
 
-  @ApiProperty({ description: "This is an officer's lastname" })
+  @ApiProperty({ description: "An officer's lastname" })
   lastName: string;
 
-  @ApiProperty({ description: "This is an officer's role" })
+  @ApiProperty({ description: `An officer's role`, enum: Role })
   role: string;
 
-  @ApiProperty({ description: "This is an officer's salary" })
+  @ApiProperty({ description: "An officer's salary", minimum: 0 })
   salary: number;
 }

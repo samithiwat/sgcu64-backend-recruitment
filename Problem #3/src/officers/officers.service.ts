@@ -53,13 +53,14 @@ export class OfficersService {
     // return this.officerRepository.find();
   }
 
-  public async search(query): Promise<Officer[]> {
-    let filter: Officer[] = [];
-    let temp: Officer[] = [];
-    let result: Officer[] = [];
+  public async search(query): Promise<OfficerInfo[]> {
+    const officerData = this.findAll();
+    let filter: OfficerInfo[] = [];
+    let temp: OfficerInfo[] = [];
+    let result: OfficerInfo[] = [];
     let isFiltered = false;
     if (query.id != 'undefined' && query.id) {
-      filter = this.findId(query.id, this.officers);
+      filter = this.findId(query.id, officerData);
       isFiltered = true;
     }
     result = filter;
@@ -95,15 +96,14 @@ export class OfficersService {
   public async getId(id: string): Promise<Officer | undefined> {
     for (const officer of this.officers) {
       if (officer.uid === id) {
-        // console.log(officer);
         return officer;
       }
     }
     // return this.officerRepository.findOne(id);
   }
 
-  public findId(id: string, filters: Officer[]) {
-    const result: Officer[] = [];
+  public findId(id: string, filters: OfficerInfo[]) {
+    const result: OfficerInfo[] = [];
     for (const officer of filters) {
       if (officer.uid === id) {
         result.push(officer);
@@ -112,8 +112,8 @@ export class OfficersService {
     return result;
   }
 
-  public findFirstname(firstname: string, filter: Officer[]) {
-    const result: Officer[] = [];
+  public findFirstname(firstname: string, filter: OfficerInfo[]) {
+    const result: OfficerInfo[] = [];
     for (const officer of filter) {
       if (officer.firstName.toLowerCase() === firstname.toLowerCase()) {
         result.push(officer);
@@ -122,8 +122,8 @@ export class OfficersService {
     return result;
   }
 
-  public findLastname(lastname: string, filter: Officer[]) {
-    const result: Officer[] = [];
+  public findLastname(lastname: string, filter: OfficerInfo[]) {
+    const result: OfficerInfo[] = [];
     for (const officer of filter) {
       if (officer.lastName.toLowerCase() === lastname.toLowerCase()) {
         result.push(officer);
@@ -132,8 +132,8 @@ export class OfficersService {
     return result;
   }
 
-  public findRole(role: string, filter: Officer[]) {
-    const result: Officer[] = [];
+  public findRole(role: string, filter: OfficerInfo[]) {
+    const result: OfficerInfo[] = [];
     for (const officer of filter) {
       if (officer.role.toLowerCase() === role.toLowerCase()) {
         result.push(officer);

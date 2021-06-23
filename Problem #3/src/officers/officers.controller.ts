@@ -23,9 +23,11 @@ import {
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -35,10 +37,9 @@ import { Officer as OfficerInterface } from './interface/officer.interface';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Action } from 'src/role/role.enum';
 import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
-import { Officer } from './officers';
+import { Officer, OfficerInfo } from './officers';
 import { Tools } from 'src/utils/tools';
 
-// @ApiBearerAuth()
 @ApiTags('officers')
 @Controller('officers')
 export class OfficersController {
@@ -48,7 +49,7 @@ export class OfficersController {
   ) {}
 
   //TODO get user's information
-  //! REQUIRE Bearer Token
+  //! REQUIRED Bearer Token
 
   @ApiBearerAuth()
   @ApiOperation({
@@ -57,19 +58,7 @@ export class OfficersController {
   })
   @ApiOkResponse({
     description: 'OK',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          uid: { type: 'string' },
-          firstname: { type: 'string' },
-          lastname: { type: 'string' },
-          role: { type: 'string' },
-          salray: { type: 'number' },
-        },
-      },
-    },
+    schema: { $ref: getSchemaPath(OfficerInfo) },
   })
   @ApiUnauthorizedResponse({
     description: 'Must included a bearer token in the headers',
@@ -84,11 +73,12 @@ export class OfficersController {
   @UseGuards(JwtAuthGuard)
   async findMe(@Request() req): Promise<string> {
     const user = await this.officersService.getId(req.user.uid);
-    return JSON.stringify(user);
+    const { password, ...info } = user;
+    return JSON.stringify(info);
   }
 
   //TODO get all user's information
-  //! REQUIRE Bearer Token
+  //! REQUIRED Bearer Token and Role HR
 
   @ApiBearerAuth()
   @ApiOperation({
@@ -97,19 +87,7 @@ export class OfficersController {
   })
   @ApiOkResponse({
     description: "Return all officer's info",
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          uid: { type: 'string' },
-          firstname: { type: 'string' },
-          lastname: { type: 'string' },
-          role: { type: 'string' },
-          salray: { type: 'number' },
-        },
-      },
-    },
+    schema: { type: 'array', items: { $ref: getSchemaPath(OfficerInfo) } },
   })
   @ApiUnauthorizedResponse({
     description: 'Must included a bearer token in the headers',
@@ -139,6 +117,9 @@ export class OfficersController {
     throw new HttpException('Insufficiency permission', HttpStatus.FORBIDDEN);
   }
 
+  //TODO search officer by uid, firstname, lastname or role via query params
+  //! REQUIRED Bearer Token and Role HR
+
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Search officer',
@@ -146,20 +127,8 @@ export class OfficersController {
       'Search officer by uid, firstname, lastname or role via query params',
   })
   @ApiOkResponse({
-    description: "Return all officer's info",
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          uid: { type: 'string' },
-          firstname: { type: 'string' },
-          lastname: { type: 'string' },
-          role: { type: 'string' },
-          salray: { type: 'number' },
-        },
-      },
-    },
+    description: "Return searched officer's info",
+    schema: { type: 'array', items: { $ref: getSchemaPath(OfficerInfo) } },
   })
   @ApiUnauthorizedResponse({
     description: 'Must included a bearer token in the headers',
@@ -179,10 +148,26 @@ export class OfficersController {
       },
     },
   })
-  @ApiQuery({ name: 'role', required: false })
-  @ApiQuery({ name: 'lastname', required: false })
-  @ApiQuery({ name: 'firstname', required: false })
-  @ApiQuery({ name: 'id', required: false })
+  @ApiQuery({
+    name: 'role',
+    description: 'role of user (HR or employee)',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'lastname',
+    description: 'lastname of user',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'firstname',
+    description: 'firstname of user',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'id',
+    description: 'id of user',
+    required: false,
+  })
   @Get('search')
   @UseGuards(JwtAuthGuard)
   async search(@Req() req, @Query() query): Promise<string | HttpException> {
@@ -195,7 +180,7 @@ export class OfficersController {
   }
 
   //TODO create new user profile
-  //! REQUIRE Bearer Token
+  //! REQUIRED Bearer Token and Role HR
 
   @Post('create')
   @UseGuards(JwtAuthGuard)
@@ -269,9 +254,57 @@ export class OfficersController {
     throw new HttpException('Insufficiency permission', HttpStatus.FORBIDDEN);
   }
 
-  //! CANNOT Update uid
+  //TODO update user's information from valid data in request body
+  //! REQUIRED Bearer Token and Role HR
+  //! CANNOT Update uid and the others password
 
   @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Update a user account',
+    description: `Update a specific user information if request body is valided.\n
+                  *CANNOT* update uid and the others password`,
+  })
+  @ApiOkResponse({
+    description: "Return all officer's info",
+    schema: { $ref: getSchemaPath(OfficerInfo) },
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid request body',
+    schema: {
+      properties: {
+        message: { type: 'string', example: 'Invalid request body' },
+        statusCode: { type: 'number', example: '400' },
+      },
+    },
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Must included a bearer token in the headers',
+    schema: {
+      properties: {
+        message: { type: 'string', example: 'Unauthorized' },
+        statusCode: { type: 'number', example: '401' },
+      },
+    },
+  })
+  @ApiForbiddenResponse({
+    description: 'Insufficiency permission',
+    schema: {
+      properties: {
+        message: { type: 'string', example: 'Insufficiency permission' },
+        statusCode: { type: 'number', example: '403' },
+      },
+    },
+  })
+  @ApiNotFoundResponse({
+    description: "Can't find user's id in database",
+    schema: {
+      properties: {
+        message: { type: 'string', example: 'Not Found' },
+        statusCode: { type: 'number', example: '404' },
+      },
+    },
+  })
+  @ApiParam({ name: 'id', description: "A user's id that you want to update" })
   @ApiBody({ type: UpdateOfficerDto })
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
@@ -279,16 +312,13 @@ export class OfficersController {
     @Req() req,
     @Param('id') id: string,
     @Body() updateOfficerDto: UpdateOfficerDto,
-  ): Promise<HttpException> {
+  ): Promise<string | HttpException> {
     const { uid, password, ...info } = updateOfficerDto;
     const user: Officer = await this.officersService.getId(id);
     const ability = this.caslAbilityFactory.createForUser(req.user);
     let canUpdate = true;
     if (uid) {
-      throw new HttpException(
-        'Insufficiency permission',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException('Invalid request body', HttpStatus.BAD_REQUEST);
     }
     if (password) {
       if (!ability.can(Action.UPDATE, new Officer(user), 'password')) {
@@ -309,14 +339,45 @@ export class OfficersController {
     }
     if (canUpdate) {
       if (await this.officersService.update(id, updateOfficerDto)) {
-        throw new HttpException('Updated', HttpStatus.CREATED);
+        const user = await this.officersService.getId(id);
+        const { password, ...info } = user;
+        return JSON.stringify(info);
       }
-      throw new HttpException('Not Match', HttpStatus.PRECONDITION_FAILED);
+      throw new HttpException('Not Match', HttpStatus.NOT_FOUND);
     }
     throw new HttpException('Insufficiency permission', HttpStatus.FORBIDDEN);
   }
 
+  //TODO delete user account
+  //! REQUIRED Bearer Token and Role HR
+
   @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Delete a user account',
+    description: `Delete a specific user account.`,
+  })
+  @ApiNoContentResponse({
+    description: 'Successful : No content return',
+  })
+  @ApiForbiddenResponse({
+    description: 'Insufficiency permission',
+    schema: {
+      properties: {
+        message: { type: 'string', example: 'Insufficiency permission' },
+        statusCode: { type: 'number', example: '403' },
+      },
+    },
+  })
+  @ApiNotFoundResponse({
+    description: "Can't find user's id in database",
+    schema: {
+      properties: {
+        message: { type: 'string', example: 'Not Found' },
+        statusCode: { type: 'number', example: '404' },
+      },
+    },
+  })
+  @ApiParam({ name: 'id', description: "A user's id that you want to delete" })
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Req() req, @Param('id') id: string): Promise<HttpException> {
@@ -325,11 +386,25 @@ export class OfficersController {
       if (await this.officersService.remove(id)) {
         throw new HttpException('Successful', HttpStatus.NO_CONTENT);
       }
-      throw new HttpException('Not Match', HttpStatus.PRECONDITION_FAILED);
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
     throw new HttpException('Insufficiency permission', HttpStatus.FORBIDDEN);
   }
 
+  @ApiOperation({
+    summary: `Generate a mock user's data\n
+     (for testing only not included in the main system)`,
+    description: `Mock up some amount of user's data\n.
+    **NOTE** for testing only not included in the main system`,
+  })
+  @ApiParam({
+    name: 'amount',
+    description: 'An amount of mock data that you want.',
+  })
+  @ApiOkResponse({
+    description: "Return all officer's info",
+    schema: { $ref: getSchemaPath(OfficerInfo) },
+  })
   @Get('factory/:amount')
   factory(@Param('amount') amount: number): OfficerInterface[] {
     return this.officersService.factory(amount);

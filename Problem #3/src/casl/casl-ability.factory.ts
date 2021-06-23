@@ -23,8 +23,8 @@ export class CaslAbilityFactory {
     if (user.role === Role.HR) {
       can(Action.MANAGE, 'all');
     }
+    cannot(Action.UPDATE, Officer, ['password']);
     can(Action.UPDATE, Officer, ['password'], { uid: user.uid });
-    cannot(Action.UPDATE, Officer, ['uid']);
     return build({
       detectSubjectType: (item) =>
         item.constructor as ExtractSubjectType<Subjects>,
