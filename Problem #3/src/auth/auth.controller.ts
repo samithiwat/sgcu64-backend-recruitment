@@ -4,9 +4,9 @@ import { AuthStrategy } from './auth.strategy';
 import {
   ApiBody,
   ApiCreatedResponse,
+  ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
-  getSchemaPath,
 } from '@nestjs/swagger';
 
 @ApiTags('auth')
@@ -14,8 +14,12 @@ import {
 export class AuthController {
   constructor(private authStrategy: AuthStrategy) {}
 
+  @ApiOperation({
+    summary: 'Login for token',
+    description: 'Login and get an access_token',
+  })
   @ApiCreatedResponse({
-    description: 'Created',
+    description: 'Successfully logged in and return your access_token',
     schema: {
       properties: {
         access_token: {
@@ -26,11 +30,11 @@ export class AuthController {
     },
   })
   @ApiUnauthorizedResponse({
-    description: 'Unauthorize',
+    description: 'Invalid uid or password',
     schema: {
       properties: {
         message: { type: 'string', example: 'Unauthorize' },
-        status: { type: 'number', example: '401' },
+        statusCode: { type: 'number', example: '401' },
       },
     },
   })

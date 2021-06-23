@@ -19,8 +19,9 @@ export class Tools {
     if (typeof obj.role != 'undefined' && obj.role) {
       if (obj.role === 'HR' || obj.role === 'employee') {
         countValid++;
+      } else {
+        return false;
       }
-      return false;
     }
     if (typeof obj.salary != 'undefined' && obj.salary) {
       countValid++;

@@ -7,7 +7,6 @@ import { Officer, OfficerInfo } from './interface/officer.interface';
 import { Officer as OfficerEntity } from './entities/officer.entity';
 import { Tools } from 'src/utils/tools';
 import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
-import { Action } from 'src/role/role.enum';
 
 @Injectable()
 export class OfficersService {
@@ -33,15 +32,12 @@ export class OfficersService {
   constructor(
     @InjectRepository(OfficerEntity)
     private officerRepository: Repository<Officer>,
-    private caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   public async create(createOfficerDto: CreateOfficerDto): Promise<boolean> {
-    if (Tools.isDataValid(createOfficerDto)) {
-      if (!(await this.getId(createOfficerDto.uid))) {
-        this.officers.push(createOfficerDto);
-        return true;
-      }
+    if (!(await this.getId(createOfficerDto.uid))) {
+      this.officers.push(createOfficerDto);
+      return true;
     }
     return false;
     // return this.officerRepository.create(createOfficerDto);
