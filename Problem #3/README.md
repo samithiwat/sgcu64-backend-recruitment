@@ -144,7 +144,7 @@ Swagger UI
 ## Feature
 
 - An API Documentation.
-- User can login and get their access_token for authorization.
+- User can login and get their access token for authorization.
 - Can **CREATE** **UPDATE** **DELETE** and **READ** user's information
 - **ONLY** Role HR can do all task via this API.
 - Employee still can change their _own_ password and get their information from this API.
@@ -153,7 +153,7 @@ Swagger UI
 
 1. Download all requirement
 2. Open cmd / terminal
-3. Run command
+3. Run commands
 
   <br/>
   
@@ -184,7 +184,7 @@ Swagger UI
 
 ## Note
 
-- Before getting start I have to told you that I have some problem of the TypeOrm library and I can't migration the database. So, I solve problem by push the user data to store array.
+- Before getting start I have to tell you that I have some problem with the TypeOrm library and I can't do migration the database. So, I solve problem by push the user data to store array.
 
 ## CAUTION
 
@@ -196,8 +196,7 @@ Swagger UI
 
 ### Go to API Doc Page
 
-- go to url `http://localhost:3000/api`
-  and you will see api docs page.
+- When you run all of the above commands the servcie should start. Go to url `http://localhost:3000/api` and you will see API Docs page.
 
     <br/>
 
@@ -222,7 +221,7 @@ Swagger UI
 
   <br/>
 
-  **_You can also create more mock user by [factory](#factory)_**
+  **_You can also create more mock user by the [factory](#factory)_**
 
   <br/>
 
@@ -362,7 +361,7 @@ Swagger UI
 
   <br/>
 
-- It will return a array of all users and response code **_200 OK_** **_(This response is the only one that included password in user info)_**
+- It will return an array of all users and response code **_200 OK_** **_(This response is the only one that included password in user info)_**
 
   ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/FactoryResponse.PNG?raw=true)
 
