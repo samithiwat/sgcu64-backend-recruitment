@@ -141,4 +141,243 @@ Swagger UI
 
 ## Feature
 
--
+- An API Documentation.
+- User can login and get their access_token for authorization.
+- Can **CREATE** **UPDATE** **DELETE** and **READ** user's information
+- **ONLY** Role HR can do all task via this API.
+- Employee still can change their _own_ password and get their information from this API.
+
+## Set Up Project
+
+1. Download all requirement
+2. Open cmd / terminal
+3. Run command
+
+  <br/>
+  
+  ```
+  cd <program directory>/Problem #3
+  ```
+  **For npm**
+  ```
+  npm install
+  ```
+  ```
+  npm run build
+  ```
+  ```
+  npm run start
+  ```
+  **For yarn**
+  ```
+  yarn install
+  ```
+  ```
+  yarn run build
+  ```
+  ```
+  yarn run start
+  ```
+<br/>
+
+## Note
+
+- Before getting start I have to told you that I have some problem of the TypeOrm library and I can't migration the database. So, I solve problem by push the user data to store array.
+
+## CAUTION
+
+- If you restart the service all of the users information will loss except the mock user that I have hard code in the service please carefully.
+
+## Manual
+
+---
+
+### Go to API Doc Page
+
+- go to url `http://localhost:3000/api`
+  and you will see api docs page.
+
+    <br/>
+
+  **Example**
+
+    <br/>
+
+  ![alt text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/index_page.PNG?raw=true)
+
+### Get Access Token
+
+- to get access token you must login first
+
+  <br/>
+
+  **_I have already provided some mock up user for you_**
+
+  | uid | Password    | Firstname | Lastname   | Role       | Salary |
+  | --- | ----------- | --------- | ---------- | ---------- | ------ |
+  | "1" | "!password" | "user1"   | "HR"       | "HR"       | 50000  |
+  | "2" | "!password" | "user2"   | "employee" | "employee" | 30000  |
+
+  <br/>
+
+  **_You can also create more mock user by [factory](#factory)_**
+
+  <br/>
+
+- Click at _auth/authorize_
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/Auth.PNG?raw=true)
+
+<br/>
+
+- Enter uid and password
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/AuthExample.PNG?raw=true)
+
+<br/>
+
+- And you will get _response code 201_ with an access token.
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/AuthTokenExample.PNG?raw=true)
+
+<br/>
+
+**NOTE** The token will expire in 1 hour. If it expired you need to login and request the access token again to use the service.
+
+<br/>
+
+### Use Access Token
+
+- After you got an access token you need to copy for authorization
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/UseTokenExample.PNG?raw=true)
+
+<br/>
+
+- Go to top of the page and look for **_locked icon_** with description `Authorize` at the top right.
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/Authorization_button.PNG?raw=true)
+
+<br/>
+
+- After you open it, it will pop up an authorization page
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/Authorization_popup.PNG?raw=true)
+
+<br/>
+
+- Enter your access token and then click authorize
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/UseTokenExample2.PNG?raw=true)
+  **_And now you ready to use the service_**
+
+<br/>
+
+**NOTE** Press the log out button in authorize pop up to log out from the service but the token can still use until it expire.
+
+<br/>
+
+### How to call API
+
+- #### **Example 1** : Get your information.
+
+  If you have already logged in and finished the authorization. You can click at _/officers/me_ to get your information.
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/Me1.PNG?raw=true)
+
+  <br/>
+
+  Click **_try this_** and then click _**execute**_.
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/TryItout.PNG?raw=true)
+
+  <br/>
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/Execute.PNG?raw=true)
+
+  <br/>
+
+  You will recieve a **_response_** like this.
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/MeResponse.PNG?raw=true)
+
+  <br/>
+
+  If you scoll down a little bit you can see all possible **_response_**.
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/MeResponse2.PNG?raw=true)
+
+- #### **Example 2** : Update a user account.
+
+  If you have already **_logged in_** and your role is **_HR_**.
+  You can update user almost all of their info **_except_** uid and password **_(can't update the others password)_** at _/officers/{id}_ by **PATCH Method**
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/Update.PNG?raw=true)
+
+  <br/>
+
+  Enter information that you want to update and uid of the user that you want to update at reqeust params (**_CAUTION_** the uid that can't be change so don't put in the request body if you still enter it will response error code **_400 Bad Request_**)
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/UpdateInput2.PNG?raw=true)
+
+  <br/>
+
+  If not have any problem it will response code **_200 OK_** with updated user information.
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/UpdateResponseOK.PNG?raw=true)
+
+  <br/>
+
+  But if you change the others password (Now I logged in as user1) or you **_Role_** are not **_HR_**.
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/UpdateInput3.PNG?raw=true)
+
+  <br/>
+
+  It will response an error code **_403 Forbidden_** back to you.
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/UpdateResponseForbidden.PNG?raw=true)
+
+  <br/>
+
+  You can also see all possible response if you scoll down a little bit.
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/UpdatePossibleResponse.PNG?raw=true)
+
+  <br/>
+
+  **_I think this is enough tutorial and I hope you have fun with SGCU API Doc :)_**
+
+### Factory
+
+- #### ** This part use to mock up user information for testing only not consider as a main system so I don't put an authorization with this thing **
+
+- If you want to add more mock user data you can use _officers/factory/{amount}_ to generate a mock user data as you needed
+
+- Firstly click at _officers/factory/{amount}_ then input some amount of user that you want
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/Factory.PNG?raw=true)
+
+  <br/>
+
+- It will return a array of all users and response code **_200 OK_** **_(This response is the only one that included password in user info)_**
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/FactoryResponse.PNG?raw=true)
+
+  <br/>
+
+  **_Have Fun =)_**
+
+### Schema
+
+- You can see all schema of user that this service use at the bottom of the web page.
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/Schema1.PNG?raw=true)
+
+  <br/>
+
+- When you click at it, will show a detail of the schema
+
+  ![alt_text](https://github.com/samithiwat/sgcu64-backend-recruitment/blob/PicAndDemo/Schema2.PNG?raw=true)
+
+  <br/>

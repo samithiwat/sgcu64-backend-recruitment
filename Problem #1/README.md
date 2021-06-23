@@ -83,7 +83,7 @@
 
 1. Make sure you installed python version 3.8.8 or later
 2. Open cmd / terminal
-3. Enter command
+3. Run command
 
    ```
       cd <program directory>/Problem #1

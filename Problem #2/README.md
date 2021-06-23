@@ -121,7 +121,7 @@ Please input any number: 3
 
 1. Make sure you install java JDK version 15.0.2 or later (I'm not sure that older version will work :|)
 2. Open cmd / terminal
-3. Enter command
+3. Run command
 
    ```
       cd <program directory>/Problem #2
