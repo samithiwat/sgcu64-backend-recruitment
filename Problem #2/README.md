@@ -135,15 +135,15 @@ Please input any number: 3
 
 ---
 
-##### Create a Database
+#### Create a Database
 
-- If you open a program for the first time you will see text
-  `Not found user's database creating new one...`  
-   `Not found location's database creating new one...`
-  don't be worry, it is creating a database for you :)
+- If you open a program for the first time you will see text<br/>
+  `Not found user's database creating new one...`
+  <br/>`Not found location's database creating new one...`
+  <br>don't be worry, it is creating a database for you :)
   <br/>
 
-##### Main menu
+#### Main menu
 
 - When you enter Chula Chana you will see main menu and avaliable command.<br/>
 
@@ -174,7 +174,7 @@ Please input any number: 3
 
 <br/>
 
-##### Register a User
+#### Register a User
 
 - When you checking in. If your phone number doesn't exist in database
   Chula Chana will let you register by enter phone number and username<br/>
@@ -203,9 +203,10 @@ Please input any number: 3
   **NOTE 2** If you get any error you will return to main menu and you will loss the process.
   <br/>
 
-##### Register a Location
+#### Register a Location
 
-- When you checking in. If in database doesn't has any registered location, you input the location doesn't exist in database or you enter "ADD" command Chula Chana will let you register location by enter the location's name.<br/>
+- When you checking in. If in database doesn't has any registered location, you input the location doesn't exist in database or you enter "ADD" command Chula Chana will let you register location by enter the location's name.
+  <br/>
   **NOTE 1** The location name must not same as the registered location in database and more than 5 character to complete the location register process.
   <br/>
   **Example error message**
@@ -219,16 +220,17 @@ Please input any number: 3
   ============================
   ```
 
-  <br>
+  <br/>
 
   **NOTE 2** If you get any error you will return to main menu and you will loss the process.
   <br/>
 
-##### Check in
+#### Check in
 
 - If you enter command "1" (Check in) in the main menu
   Chula Chana will request your phone number to check in and then it will let you select location to check in.
-- When finished check in or get an error you will return to the main menu.<br/>
+- When finished check in or get an error you will return to the main menu.
+  <br/>
   **NOTE 1** If your phone number dosen't exist in database Chula Chana will let you register.
   <br/>
 
@@ -265,13 +267,14 @@ Please input any number: 3
   ---------------------------------------------
   ```
 
-  <br/>
+    <br/>
 
-##### Check out
+#### Check out
 
 - If you enter command "2" (Check out) in the main menu
   Chula Chana will request your phone number to check out from current location.
-  <br/>**NOTE** if you are currently not check in at any locaiton Chula Chana will tell you that you are not at any location.
+  <br/>
+  **NOTE** if you are currently not check in at any locaiton Chula Chana will tell you that you are not at any location.
 
   ```
   ---------------------------------------------
@@ -282,7 +285,7 @@ Please input any number: 3
 
   <br/>
 
-##### Show the number of users in locations
+#### Show the number of users in locations
 
 - If you enter command "3" (Print people count) in the main menu
   Chula Chana will show Location list and the number of users in each location.
@@ -301,7 +304,7 @@ Please input any number: 3
 
 <br/>
 
-##### Search user via phone number
+#### Search user via phone number
 
 - If you enter command "4" in main menu
   Chula Chana will requst a phone number
@@ -336,6 +339,6 @@ Please input any number: 3
 
 <br>
 
-##### Exit Program
+#### Exit Program
 
 - If you enter "END" command Chula Chana will terminate.
